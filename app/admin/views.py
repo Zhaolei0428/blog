@@ -65,6 +65,7 @@ def register():
             user = User(username=form.username.data, password=form.password.data)
             db.session.add(user)
             db.session.flush()
+            # db.session.commit()
             flash('注册成功')
             return redirect(url_for('admin.login'))
         except IntegrityError as error:

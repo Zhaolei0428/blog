@@ -1,0 +1,40 @@
+almost copy from @https://github.com/ltoddy/flask-tutorial
+
+work out some holes so this program can execute in my PC
+
+hole1:
+Required() -> DataRequired() 
+
+hole2:
+SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+this let the session autocommit but let the following code run false:
+        try:
+            user = User(username=form.username.data, password=form.password.data)
+            db.session.add(user)
+            flash('注册成功')
+            return redirect(url_for('admin.login'))
+        except IntegrityError as error:
+            flash('帐号已存在')
+            return redirect(url_for('admin.register'))
+the valid answer is:
+        try:
+            user = User(username=form.username.data, password=form.password.data)
+            db.session.add(user)
+            db.session.flush()
+            # db.session.commit()
+            flash('注册成功')
+            return redirect(url_for('admin.login'))
+        except IntegrityError as error:
+            db.session.rollback()
+            flash('帐号已存在')
+            return redirect(url_for('admin.register'))
+or let SQLALCHEMY_COMMIT_ON_TEARDOWN = False and:
+        try:
+            user = User(username=form.username.data, password=form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            flash('注册成功')
+            return redirect(url_for('admin.login'))
+        except IntegrityError as error:
+            flash('帐号已存在')
+            return redirect(url_for('admin.register'))

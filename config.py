@@ -8,7 +8,6 @@ class Config:
     # 数据库配置
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-    SQLALCHEMY_COMMIT_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     @staticmethod
