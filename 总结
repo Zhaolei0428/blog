@@ -1,11 +1,10 @@
-almost copy from @https://github.com/ltoddy/flask-tutorial
+参考项目@https://github.com/ltoddy/flask-tutorial
 
-work out some holes so this program can execute in my PC
+踩过一些坑所以这份代码现在能在我的电脑上运行
+坑1:
+Required() -> DataRequired()  Required has been deprecated.
 
-hole1:
-Required() -> DataRequired() 
-
-hole2:
+坑2:
 SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 this let the session autocommit but let the following code run false:
         try:
@@ -38,3 +37,12 @@ or let SQLALCHEMY_COMMIT_ON_TEARDOWN = False and:
         except IntegrityError as error:
             flash('帐号已存在')
             return redirect(url_for('admin.register'))
+
+坑3：
+    # from .main import main as main_blueprint 这个不对
+    from . import main as main_blueprint
+    # app.register_blueprint(main_blueprint) 这个不对
+    for obj in vars(main_blueprint).values():
+        if isinstance(obj, Blueprint):
+            app.register_blueprint(obj)
+
